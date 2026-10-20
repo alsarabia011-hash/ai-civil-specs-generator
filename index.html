@@ -4,56 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Civil Prompt & Specs Generator</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-6">
-    <div class="max-w-3xl mx-auto bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
-        <h1 class="text-2xl font-bold text-cyan-400 mb-2">AI Civil Prompt & Specs Generator</h1>
-        <p class="text-slate-400 text-sm mb-6">Bridge structural engineering parameters with Text-to-3D prompts and code standards.</p>
-        
-        <div class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium mb-1">Structural Element Type</label>
-                <select id="elementType" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
-                    <option value="Concrete Girder Bridge">Concrete Girder Bridge (AASHTO)</option>
-                    <option value="High-Rise Residential Tower">High-Rise Residential Tower (ACI 318M)</option>
-                    <option value="Post-Tensioned Flat Slab">Post-Tensioned Flat Slab</option>
-                </select>
-            </div>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 flex flex-col items-center">
 
-            <div>
-                <label class="block text-sm font-medium mb-1">Design Standard / Code</label>
-                <select id="codeStandard" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
-                    <option value="AASHTO LRFD Bridge Design Specifications">AASHTO LRFD</option>
-                    <option value="ACI 318M Building Code Requirements">ACI 318M</option>
-                </select>
-            </div>
+    <div class="w-full max-w-md bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+        <h1 class="text-xl font-bold mb-1 text-cyan-400">AI Civil Prompt & Specs Generator</h1>
+        <p class="text-xs text-slate-400 mb-6">Bridge structural engineering parameters with optimized 3D prompts and code specs.</p>
 
-            <button onclick="generateSpecs()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2.5 rounded-lg transition-colors">
-                Generate AI Prompt & Specs
-            </button>
+        <!-- Element Selector -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-2 text-slate-300">Structural Element Type</label>
+            <select id="elementType" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+                <option value="bridge">Concrete Girder Bridge (AASHTO)</option>
+                <option value="tower">High-Rise Residential Tower (ACI 318M)</option>
+                <option value="slab">Post-Tensioned Flat Slab</option>
+                <option value="pile">Deep Foundation Pile Cap (ACI 318M)</option>
+                <option value="dam">Concrete Gravity Dam (USACE)</option>
+                <option value="tunnel">Underground Bored Tunnel Lining</option>
+            </select>
         </div>
 
-        <div class="mt-6 space-y-4">
+        <!-- Design Code -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium mb-2 text-slate-300">Design Standard / Code</label>
+            <select id="designCode" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm text-slate-100 focus:outline-none focus:border-cyan-500">
+                <option value="AASHTO LRFD">AASHTO LRFD Bridge Design Specifications</option>
+                <option value="ACI 318M">ACI 318M Building Code Requirements for Structural Concrete</option>
+            </select>
+        </div>
+
+        <button onclick="generateSpecs()" class="w-full bg-cyan-600 hover:bg-cyan-500 font-semibold py-2.5 rounded-lg text-sm transition shadow-md mb-6">
+            Generate AI Prompt & Specs
+        </button>
+
+        <!-- Output Section -->
+        <div class="space-y-4">
             <div>
-                <label class="block text-sm font-medium text-cyan-400 mb-1">Generated Text-to-3D Prompt</label>
-                <textarea id="promptOutput" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 h-24"></textarea>
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-1">Generated Text-to-3D Prompt</h3>
+                <div id="promptOutput" class="bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs text-slate-300 font-mono">
+                    Detailed 3D architectural and structural model of a Concrete Girder Bridge, highly realistic, structural engineering BIM style, clean concrete textures, professional lighting.
+                </div>
             </div>
+
             <div>
-                <label class="block text-sm font-medium text-cyan-400 mb-1">Preliminary Code Summary</label>
-                <textarea id="specsOutput" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 h-28"></textarea>
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-1">Preliminary Code Summary</h3>
+                <div id="codeOutput" class="bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs text-slate-300 font-mono">
+                    - Compliance Standard: AASHTO LRFD<br>
+                    - Bridge Design Specifications<br>
+                    - Structural Element: Concrete Girder Bridge<br>
+                    - Safety Factor & Load Combinations
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        const data = {
+            bridge: {
+                prompt: "Detailed 3D structural model of a Concrete Girder Bridge, highly realistic, structural engineering BIM style, clean concrete textures, professional lighting.",
+                specs: "- Compliance Standard: AASHTO LRFD<br>- Bridge Design Specifications<br>- Structural Element: Concrete Girder Bridge<br>- Safety Factor & Load Combinations"
+            },
+            tower: {
+                prompt: "3D architectural rendering of a multi-story High-Rise Residential Tower, structural core, shear walls, glass façade, modern engineering visualization.",
+                specs: "- Compliance Standard: ACI 318M<br>- Minimum Flexural Reinforcement<br>- Lateral Wind & Seismic Load Distribution<br>- Story Drift Limits"
+            },
+            slab: {
+                prompt: "Isometric 3D structural model of a Post-Tensioned Flat Slab floor system, tendon layout profiles, anchorage zones, high-strength concrete finish.",
+                specs: "- Compliance Standard: ACI 318M / PTI<br>- Effective Prestress Force Calculations<br>- Punching Shear Verification<br>- Long-term Deflection Control"
+            },
+            pile: {
+                prompt: "Detailed 3D engineering model of a Deep Foundation Pile Cap and reinforced concrete piles, geotechnical interaction visualization, sectional cut view.",
+                specs: "- Compliance Standard: ACI 318M / Geotechnical Code<br>- Ultimate Bearing Capacity<br>- Group Efficiency and Settlement<br>- Shear Reinforcement in Cap"
+            },
+            dam: {
+                prompt: "Massive 3D structural model of a Concrete Gravity Dam, spillway gates, upstream water pressure visualization, hydro-structural engineering design style.",
+                specs: "- Compliance Standard: USACE / FERC Standards<br>- Sliding and Overturning Stability<br>- Uplift Pressure Distribution<br>- Thermal Stress Control"
+            },
+            tunnel: {
+                prompt: "Underground Bored Tunnel structural lining, segmental concrete rings, waterproofing membrane, 3D geotechnical tunneling visualization, technical lighting.",
+                specs: "- Compliance Standard: ITA Guidelines<br>- Hoop Stress and Bending Moments<br>- Segment Joint Connectors<br>- Ground-Structure Interaction"
+            }
+        };
+
         function generateSpecs() {
             const type = document.getElementById('elementType').value;
-            const code = document.getElementById('codeStandard').value;
-            
-            document.getElementById('promptOutput').value = `Detailed 3D architectural and structural model of a ${type}, highly realistic, structural engineering BIM style, clean concrete textures, professional lighting, optimized for generative 3D AI.`;
-            
-            document.getElementById('specsOutput').value = `Compliance Standard: ${code}\n- Structural Element: ${type}\n- Safety Factor & Load Combinations verified per standard.\n- Preliminary reinforcement and geometric limits initialized successfully.`;
+            if(data[type]) {
+                document.getElementById('promptOutput').innerHTML = data[type].prompt;
+                document.getElementById('codeOutput').innerHTML = data[type].specs;
+            }
         }
     </script>
 </body>
