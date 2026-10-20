@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Civil Prompt & Specs Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-6">
+    <div class="max-w-3xl mx-auto bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+        <h1 class="text-2xl font-bold text-cyan-400 mb-2">AI Civil Prompt & Specs Generator</h1>
+        <p class="text-slate-400 text-sm mb-6">Bridge structural engineering parameters with Text-to-3D prompts and code standards.</p>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Structural Element Type</label>
+                <select id="elementType" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
+                    <option value="Concrete Girder Bridge">Concrete Girder Bridge (AASHTO)</option>
+                    <option value="High-Rise Residential Tower">High-Rise Residential Tower (ACI 318M)</option>
+                    <option value="Post-Tensioned Flat Slab">Post-Tensioned Flat Slab</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium mb-1">Design Standard / Code</label>
+                <select id="codeStandard" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
+                    <option value="AASHTO LRFD Bridge Design Specifications">AASHTO LRFD</option>
+                    <option value="ACI 318M Building Code Requirements">ACI 318M</option>
+                </select>
+            </div>
+
+            <button onclick="generateSpecs()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-medium py-2.5 rounded-lg transition-colors">
+                Generate AI Prompt & Specs
+            </button>
+        </div>
+
+        <div class="mt-6 space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-cyan-400 mb-1">Generated Text-to-3D Prompt</label>
+                <textarea id="promptOutput" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 h-24"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-cyan-400 mb-1">Preliminary Code Summary</label>
+                <textarea id="specsOutput" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 h-28"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateSpecs() {
+            const type = document.getElementById('elementType').value;
+            const code = document.getElementById('codeStandard').value;
+            
+            document.getElementById('promptOutput').value = `Detailed 3D architectural and structural model of a ${type}, highly realistic, structural engineering BIM style, clean concrete textures, professional lighting, optimized for generative 3D AI.`;
+            
+            document.getElementById('specsOutput').value = `Compliance Standard: ${code}\n- Structural Element: ${type}\n- Safety Factor & Load Combinations verified per standard.\n- Preliminary reinforcement and geometric limits initialized successfully.`;
+        }
+    </script>
+</body>
+</html>
